@@ -1,0 +1,60 @@
+Hadoop Configuration and Performance Tuning
+
+Introduction:
+- With the rapid growth of data hadoop cluster experienced slow performance.
+- This phase focuses on analyzing Hadoop configuration files.
+- Recommending tuning strategies to improve performance, scalability, and resource usage.
+
+Hadoop Configuration Files:
+core-site.xml - It handles where hdfs is stored, how fast files are read/written.
+hdfs-site.xml - It handles the block size , decides how the data is stored, split.	
+mapred-site.xml	- It handles the mapper and reducer memory, number of reducers, shuffle and sort behaviour.
+yarn-site.xml - It handles container allocation, multi-job execution
+
+HDFS block management properties:
+Blocksize : 
+- The default blocksize is 128MB so it has many blocks so, many mappers are created.
+- Increase the blocksize to 256MB so block size gets reduced.
+- dfs.blocksize =  134217728  (128MB or increase to 256MB)
+- It reduces the mapper overhead, and execution will be faster.
+
+Replication factor:
+- Replication factor refers to number of copies of blocks created across different datanodes.
+- If the replication factor is more disk space will be more, write operation makes execution slow.
+- dfs.replication = 2
+- Disk space can be saved when the replication factor is 2 , write operation is also made on 2 datanodes.
+
+Mapreduce execution properties:
+MapReduce is a processing model used to process large data in parallel using mapper and reducer.
+
+Mapper Memory Configuration:
+-This property defines the memory allocated to mapper task.
+-If the memory allocated is low, tasks may take more time to execute.
+-mapreduce.map.memory.mb = 2048
+-Increasing mapper memory allows handles large data easily, reduces task failure.
+
+Reducer Memory Configuration:
+- This propery decides the memory allocated to each reducer task.
+- Reducer handles large shuffled data from mapper.
+- mapreduce.reduce.memory.mb = 4096
+- Increases shuffle and aggregation performance, improves job completion time.
+
+Number of reducers:
+- This property decides the number of reducers, increasing reducers helps in parallel processing.
+- mapreduce.job.reduces = 4
+- Many job reducers also increase the overhead optimal reducer should be given.
+
+Yarn Resource Allocation:
+Yarn handles the CPU and memory allocation to applications running in the hadoop cluster.
+It allocates containers to job, if they are not allocated properly job may get slow down or failed.
+
+YARN NodeManager Memory Allocation:
+- This property defines the memory available on a node for YARN containers.
+- yarn.nodemanager.resource.memory-mb = 16384
+- Increasing node manager memory allows more containers to run in parallel, better ustilization.
+
+YARN NodeManager CPU Allocation:
+- This property defines number of CPU cores available for container execution.
+- yarn.nodemanager.resource.cpu-vcores = 8
+- More vcores are helpful for parallel execution.
+- Reduces the execution time.
